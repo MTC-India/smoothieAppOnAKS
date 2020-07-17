@@ -1,0 +1,7 @@
+resources:
+  requests: # minimum resources required
+    cpu: 1000m
+    memory: 64Mi
+  limits: # maximum resources allocated
+    cpu: 1000m
+    memory: 256Mi

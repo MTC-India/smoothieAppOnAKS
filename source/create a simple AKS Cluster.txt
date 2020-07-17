@@ -1,0 +1,51 @@
+# Overview: This script will help you to deploy a sample public AKS cluster. 
+
+## Pre-requisites:
+1. You already have an active Azure Subscription
+2. You have a Github account and you can perform basic operations
+3. You have basic understanding of git operations.
+
+## Steps:
+
+1. Login to your Github account Fork the repo to your github account: https://github.com/Bapic/createSimpleAKSonAzure.git
+
+2. Login to Azure portal and launch Cloud Shell 
+
+4. Run the below commands to clone the repo locally. 
+
+	git clone https://github.com/Bapic/createSimpleAKSonAzure.git
+	
+	cd createSimpleAKSonAzure
+	
+	git remote show origin or git remote -v. # Ensure your repo is set to use your repo as the origin
+	
+4. Run the below command to deploy a sample AKS on Azure
+
+	bash createSimpleAKSonAzure.ps1
+	
+5. Once done, run the below commands to check the configuration. Also check the portal for the deployment.
+
+
+
+
+$name="sampleAKSonAzure01"
+$location="eastus"
+az group create -l eastus -n $name
+az aks create -n $name -g $name --node-count 1 --enable-addons monitoring --generate-ssh-keys
+az aks get-credentials -n $name -g $name
+set-content clusterinfo.txt (kubectl config get-contexts)
+add-content clusterinfo.txt (kubectl get svc)
+add-content clusterinfo.txt (kubectl get nodes)
+add-content clusterinfo.txt (kubectl get pods)
+add-content clusterinfo.txt (kubectl get ns --show-labels)
+add-content clusterinfo.txt (kubectl -n cluster-config get deploy  -o wide)
+add-content clusterinfo.txt (kubectl cluster-info)
+code clusterinfo.txt
+
+Deploy a sample application voting app with aks:
+https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-prepare-app
+
+
+Get-ChildItem -hidden | Remove-Item -Verbose -Recurse -Force
+remove-item ./createSimpleAKSonAzure/ -Force
+
